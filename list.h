@@ -55,18 +55,19 @@ typedef struct List {
  * @param inputData The element to add.
  */
 #define add(list, dataType, inputData) do {                                         \
+    dataType temp = (inputData); /* Create a temporary variable */                 \
     if ((list)->currentCount >= (list)->initSize) {                                 \
         (list)->initSize *= 2;                                                      \
         (list)->listSize = (list)->initSize * (list)->size;                         \
-        void *temp = realloc((list)->data, (list)->listSize);                       \
-        if (!temp) {                                                                \
+        void *tempPtr = realloc((list)->data, (list)->listSize);                    \
+        if (!tempPtr) {                                                             \
             fprintf(stderr, "Memory allocation failed\n");                          \
             exit(EXIT_FAILURE);                                                     \
         }                                                                           \
-        (list)->data = temp;                                                        \
+        (list)->data = tempPtr;                                                     \
     }                                                                               \
-    memmove((char*)(list)->data + ((list)->currentCount * (list)->size),            \
-           &(inputData), (list)->size);                                             \
+    memcpy((char*)(list)->data + ((list)->currentCount * (list)->size),             \
+           &temp, (list)->size);                                                    \
     (list)->currentCount++;                                                         \
     (list)->dataSize = (list)->currentCount * (list)->size;                         \
 } while (0)
@@ -113,10 +114,11 @@ typedef struct List {
  * @param inputData The element to remove.
  */
 #define remove(list, dataType, inputData) do {                                      \
+    dataType temp = (inputData); /* Store inputData in a temporary variable */      \
     int foundIndex = -1;                                                            \
     for (int i = 0; i < (list)->currentCount; i++) {                                \
         dataType *element = (dataType *)((char *)(list)->data + (i * (list)->size));\
-        if (memcmp(element, &inputData, sizeof(dataType)) == 0) {                   \
+        if (memcmp(element, &temp, sizeof(dataType)) == 0) {                        \
             foundIndex = i;                                                         \
             break;                                                                  \
         }                                                                           \
@@ -133,6 +135,7 @@ typedef struct List {
         printf("Value not found in the list.\n");                                   \
     }                                                                               \
 } while (0)
+
 
 
 /**
@@ -186,16 +189,17 @@ typedef struct List {
  * @param inputData The element to check.
  * @return 1 if found, 0 otherwise.
  */
-#define contains(list, dataType, inputData) ({                    \
-    int found = 0;                                                \
-    for (int i = 0; i < (list)->currentCount; i++) {              \
-        if (memcmp((char *)(list)->data + (i * (list)->size),     \
-                   &(inputData), (list)->size) == 0) {            \
-            found = 1;                                            \
-            break;                                                \
-        }                                                         \
-    }                                                             \
-    found;                                                        \
+#define contains(list, dataType, inputData) ({                     \
+    int found = 0;                                                 \
+    dataType temp = (inputData);                                   \
+    for (int i = 0; i < (list)->currentCount; i++) {               \
+        if (memcmp((char *)(list)->data + (i * (list)->size),      \
+                   &temp, (list)->size) == 0) {                    \
+            found = 1;                                             \
+            break;                                                 \
+        }                                                          \
+    }                                                              \
+    found;                                                         \
 })
 
 
@@ -259,11 +263,12 @@ typedef struct List {
  * @param inputData New value to set.
  */
 #define set(list, dataType, index, inputData) do {                                  \
+    dataType temp = (inputData);                                                    \
     if ((index) < 0 || (index) >= (list)->currentCount) {                           \
         printf("Invalid index: %d\n", (index));                                     \
         break;                                                                      \
     }                                                                               \
-memcpy((char *)(list)->data + ((index) * (list)->size), &(inputData), (list)->size);\
+    memcpy((char *)(list)->data + ((index) * (list)->size), &temp, (list)->size);   \
     (list)->dataSize = (list)->currentCount * (list)->size;                         \
     (list)->listSize = (list)->initSize * (list)->size;                             \
 } while (0)
