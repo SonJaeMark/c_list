@@ -23,6 +23,20 @@ typedef struct {
     Address homeAddress;
 } Person;
 
+void printPerson(const Person *p) {
+    if (!p) {
+        printf("Null Person reference.\n");
+        return;
+    }
+
+    printf("Person(Name: %s, Age: %d, Gender: %c, DOB: %02d-%02d-%d, Address: %s%s%s)\n",
+           p->name, p->age, p->gender,
+           p->dateOfBirth.MM, p->dateOfBirth.DD, p->dateOfBirth.YYYY,
+           p->homeAddress.address1,
+           p->homeAddress.address2 ? ", " : "",
+           p->homeAddress.address2 ? p->homeAddress.address2 : "");
+}
+
 void testIntList() {
     List intList;
     initList(&intList, int);
@@ -77,5 +91,12 @@ int main() {
     testDoubleList();
     testCharList();
     testPersonList();
+
+    printf("\n");
+    Person p;
+
+    typeof(p) p2 = { "Jose", 44, 'M', {2, 22, 2222}, {"add1", "add2"}};
+    printPerson(&p2);
+
     return 0;
 }

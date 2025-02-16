@@ -317,22 +317,22 @@ typedef struct List {
 } while (0)
 
 
-/**
- * @brief Converts an array into a dynamic list.
- * 
- * @param list Pointer to the List structure to initialize.
- * @param dataType The data type of elements in the array.
- * @param array The source array.
- * @param arraySize The number of elements in the array.
- * 
- * @note This macro initializes the list and adds all elements from the array.
- */
-#define arrayToList(list, dataType, array, arraySize) do {  \
-    initList(list, dataType);                              \
-    for (size_t i = 0; i < (arraySize); i++) {             \
-        add(list, dataType, (array)[i]);                   \
-    }                                                      \
-} while (0)
+// /**
+//  * @brief Converts an array into a dynamic list.
+//  * 
+//  * @param list Pointer to the List structure to initialize.
+//  * @param dataType The data type of elements in the array.
+//  * @param array The source array.
+//  * @param arraySize The number of elements in the array.
+//  * 
+//  * @note This macro initializes the list and adds all elements from the array.
+//  */
+// #define arrayToList(list, dataType, array, arraySize) do {  \
+//     initList(list, dataType);                              \
+//     for (size_t i = 0; i < (arraySize); i++) {             \
+//         add(list, dataType, (array)[i]);                   \
+//     }                                                      \
+// } while (0)
 
 int listSize(List *list);
 
