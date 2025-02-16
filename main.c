@@ -95,7 +95,7 @@ int main() {
     printf("\n");
     Person p;
 
-    typeof(p) p2 = { "Jose", 44, 'M', {2, 22, 2222}, {"add1", "add2"}};
+    typeof(p) p2 = {"John Doe", 30, 'M', {12, 25, 1993}, {"123 Main St", "Apt 4B"}};
     printPerson(&p2);
 
     return 0;
