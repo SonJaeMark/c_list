@@ -31,6 +31,8 @@ void printPerson(Person *p) {
 int main(int argc, char const *argv[])
 {
     List personList;
+    List olderPeople;
+
 
     Person person1 = {"John Doe", 30, 'M', {5, 15, 1993}, {"123 Main St", "Apt 4B"}};
     Person person2 = {"Jane Smith", 28, 'F', {8, 22, 1995}, {"456 Oak Ave", "Suite 2A"}};
@@ -75,7 +77,17 @@ int main(int argc, char const *argv[])
 
     printPerson(list_GET(&personList, Person, list_GET_INDEX_OF(&personList, Person, person3)));
     
+    
+    printf("----------------------------------------------------------------------------------\n");
+
+    list_COLLECT_TO_SUBLIST(&personList, Person, element->age > 30, &olderPeople);
+
+    for (size_t i = 0; i < listLenght(&olderPeople); i++)
+    {
+        printPerson(list_GET(&olderPeople, Person, i));
+    }
 
     listFree(&personList);
+    listFree(&olderPeople);
     return 0;
 }
