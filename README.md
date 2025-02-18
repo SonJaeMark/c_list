@@ -163,7 +163,7 @@ list_REMOVE_AT(&people, Person, 0);
 
 ### Getting List Length
 ```c
-printf("List Length: %d\n", listLenght(&people));
+printf("List Length: %d\n", listLength(&people));
 ```
 
 ### Getting Size of an Element

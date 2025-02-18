@@ -321,7 +321,7 @@ typedef struct List {
     }                                                                \
 } while (0)
 
-int listLenght(List *list);
+int listLength(List *list);
 
 char *listGetName(List *list);
 

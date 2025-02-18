@@ -11,7 +11,7 @@
  * @param list A pointer to the List.
  * @return The number of elements in the list.
  */
-int listLenght(List *list) {
+int listLength(List *list) {
     return list->currentCount;
 }
 
