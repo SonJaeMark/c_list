@@ -87,6 +87,26 @@ int main(int argc, char const *argv[])
         printPerson(list_GET(&olderPeople, Person, i));
     }
 
+    
+    printf("----------------------------------------------------------------------------------\n");
+
+    List gradeList;
+    List passedGradesList;
+
+    list_INIT(&gradeList, int);
+
+    list_ADD_ALL(&gradeList, int, 6, 79, 75, 89, 73, 98, 70);
+
+    list_COLLECT_TO_SUBLIST(&gradeList, int, *element >= 75, &passedGradesList);
+
+    for(int i = 0; i < listLenght(&passedGradesList); i++)
+    {
+        printf("Grade: %d\n", *list_GET(&passedGradesList, int, i));
+    }
+
+    listFree(&gradeList);
+    listFree(&passedGradesList);
+
     listFree(&personList);
     listFree(&olderPeople);
     return 0;

@@ -256,7 +256,10 @@ typedef struct List {
  * @param subList A pointer to the sublist to collect the elements into.
  *
  * This macro creates a sublist by iterating over the elements of the list and adding
- * them to the sublist if they satisfy the given expression.
+ * them to the sublist if they satisfy the given expression. 
+ * 
+ * @warning Use "element" to compare and treat it as a pointer. Read more in README.
+ * 
  */
 #define list_COLLECT_TO_SUBLIST(list, dataType, expression, subList) do {           \
     list_INIT(subList, dataType);                                                    \

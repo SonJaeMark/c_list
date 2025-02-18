@@ -184,9 +184,35 @@ free(array);
 ```
 
 ### Collecting a Sublist of People Older Than 30
+To use this macro always refer on element in comaparing. Use "*element" to dereference and get the
+value of in its internal logic for data types such as int, double, char etc.. As well as "element->"
+for accessing the member of a struct.
+
+example with int:
+
+```c
+List gradeList;
+List passedGradesList;
+
+list_INIT(&gradeList, int);
+
+list_ADD_ALL(&gradeList, int, 6, 79, 75, 89, 73, 98, 70);
+
+list_COLLECT_TO_SUBLIST(&gradeList, int, *element >= 75, &passedGradesList);
+
+for(int i = 0; i < listLenght(&passedGradesList); i++)
+{
+    printf("Grade: %d\n", list_GET(&passedGradesList, int, i));
+}
+
+listFree(&gradeList);
+listFree(&passedGradesList);
+```
+example with struct: 
+
 ```c
 List olderPeople;
-list_COLLECT_TO_SUBLIST(&people, Person, retrieved->age > 30, &olderPeople);
+list_COLLECT_TO_SUBLIST(&people, Person, element->age > 30, &olderPeople);
 printf("Older People List Length: %d\n", listLenght(&olderPeople));
 listFree(&olderPeople);
 ```
