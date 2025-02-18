@@ -7,12 +7,11 @@
 
 
 /**
- * @brief Gets the current number of elements in the list.
- * 
- * @param list Pointer to the List structure.
- * @return int Number of elements in the list.
+ * @brief Returns the current length of the list.
+ * @param list A pointer to the List.
+ * @return The number of elements in the list.
  */
-int listSize(List *list) {
+int listLenght(List *list) {
     return list->currentCount;
 }
 
@@ -24,7 +23,7 @@ int listSize(List *list) {
  * 
  * @note If the name starts with '&', it skips the first character.
  */
-char *getNameOf(List *list) {
+char *listGetName(List *list) {
     if (list == NULL || list->nameOf == NULL) {
         return "Unnamed List";  // Default name if uninitialized
     }
@@ -37,12 +36,11 @@ char *getNameOf(List *list) {
 }
 
 /**
- * @brief Gets the data type of the elements stored in the list.
- * 
- * @param list Pointer to the List structure.
- * @return char* Pointer to the data type string.
+ * @brief Gets the data type of the elements in the list.
+ * @param list A pointer to the List.
+ * @return The data type of the elements in the list.
  */
-char *getDataTypeOf(List *list) {
+char *listGetDataType(List *list) {
     return list->dataTypeOf;
 }
 
@@ -53,13 +51,16 @@ char *getDataTypeOf(List *list) {
  * 
  * @note This function sets pointers to NULL after freeing to avoid dangling references.
  */
-void freeList(List *list) {
-    if (!list) return;  // Prevent null pointer dereference
-
-    free(list->data);
-    list->data = NULL;
-    list->nameOf = NULL;
-    list->dataTypeOf = NULL;
+void listFree(List *list) {
+    if (list->data) {
+        free(list->data);
+    }
+    if (list->nameOf) {
+        list->nameOf = NULL;
+    }
+    if (list->dataTypeOf) {
+        list->dataTypeOf = NULL;
+    }
 
     // Reset list properties
     list->currentCount = 0;
@@ -68,15 +69,12 @@ void freeList(List *list) {
 }
 
 /**
- * @brief Gets the memory address of an element at the specified index.
- * 
- * @param list Pointer to the List structure.
- * @param index Position of the element.
- * @return void* Pointer to the memory location, or NULL if index is invalid.
- * 
- * @warning Returns NULL if the index is out of bounds.
+ * @brief Returns the memory address of an element in the list at the specified index.
+ * @param list A pointer to the List.
+ * @param index The index of the element.
+ * @return A pointer to the memory address of the element, or NULL if the index is invalid.
  */
-void *getMemoryAddress(List *list, int index) {
+void *listGetMemoryAddress(List *list, int index) {
     if (index < 0 || index >= list->currentCount) {
         printf("Invalid index: %d\n", index);
         return NULL;
@@ -86,28 +84,27 @@ void *getMemoryAddress(List *list, int index) {
 
 /**
  * @brief Checks if the list is empty.
- * 
- * @param list Pointer to the List structure.
- * @return bool True if the list is empty, false otherwise.
+ * @param list A pointer to the List.
+ * @return true if the list is empty, false otherwise.
  */
-bool isEmpty(List *list) {
+bool listIsEmpty(List *list) {
     return list->currentCount == 0;
 }
 
 /**
- * @brief Returns the total allocated memory size of the list in bytes.
- * @param list Pointer to the List structure.
- * @return The total allocated memory size in bytes.
+ * @brief Gets the size of each element in the list.
+ * @param list A pointer to the List.
+ * @return The size of each element in the list.
  */
-size_t sizeOfList(List *list) {
+size_t listSizeOf(List *list) {
     return list ? list->listSize : 0;
 }
 
 /**
- * @brief Returns the actual used memory size for stored data in bytes.
- * @param list Pointer to the List structure.
- * @return The actual used memory size in bytes.
+ * @brief Gets the total size of the data stored in the list (currentCount * size).
+ * @param list A pointer to the List.
+ * @return The total size of the data in the list in bytes.
  */
-size_t sizeOfData(List *list) {
+size_t listSizeOfData(List *list) {
     return list ? list->dataSize : 0;
 }

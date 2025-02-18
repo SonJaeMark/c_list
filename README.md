@@ -1,26 +1,54 @@
-# Dynamic List Library in C
+# ListV2 Library
 
 ## Overview
-
-This library provides a simple dynamic list implementation in C using macros and functions. It allows users to create, manage, and manipulate lists that can store elements of any data type.
+`List` is a dynamic list implementation in C using macros and functions to provide an easy-to-use, efficient, and flexible data structure for managing collections of elements. It supports adding, removing, accessing, and managing elements dynamically while maintaining memory efficiency.
 
 ## Features
-
-- Dynamic resizing
-- Macros for easy list manipulation
-- Support for various data types
-- Functions for querying and memory management
+- Dynamic memory allocation and resizing
+- Easy element insertion and deletion
+- Macro-based operations for efficiency
+- Supports any data type
+- List of Macros:
+  - `list_INIT`
+  - `list_ADD`
+  - `list_ADD_ALL`
+  - `list_ADD_AT`
+  - `list_REMOVE`
+  - `list_REMOVE_AT`
+  - `list_GET`
+  - `list_SET`
+  - `list_GET_INDEX_OF`
+  - `list_CONTAINS`
+  - `list_TO_ARRAY`
+  - `list_ARRAY_TO_LIST`
+  - `list_COLLECT_TO_SUBLIST`
+- List of Functions:
+  - `listLenght`
+  - `listGetName`
+  - `listGetDataType`
+  - `listFree`
+  - `listGetMemoryAddress`
+  - `listIsEmpty`
+  - `listSizeOf`
+  - `listSizeOfData`
+- Dynamic memory allocation and resizing
+- Easy element insertion and deletion
+- Macro-based operations for efficiency
+- Supports any data type
 
 ## Installation
+To use `List` in your project, include the following files:
 
-Simply include `list.h` and `list.c` in your project and compile them along with your main C file.
+- `list.h`
+- `list.c`
 
+Include them in your project and compile with:
 ```sh
-gcc -o main main.c list.c
+gcc your_program.c list.c -o your_program
 ```
 
-## Structure Definitions
-
+## Using `List` with the `Person` Struct
+### Struct Definition
 ```c
 typedef struct {
     int MM;
@@ -42,180 +70,137 @@ typedef struct {
 } Person;
 ```
 
-## Usage
+## Example Usage of Each Function and Macro with `Person`
 
-### 1. Initializing a List
-
+### Initializing a List
 ```c
 List people;
-initList(&people, Person);
+list_INIT(&people, Person);
 ```
 
-**Use Case:** Creating a list to store `Person` structures dynamically.
-
-### 2. Adding Elements
-
+### Adding a Person to the List
 ```c
-Person p1 = {"John Doe", 30, 'M', {12, 25, 1993}, {"123 Main St", "Apt 4B"}};
-add(&people, Person, p1);
+Person p1 = {"Alice", 30, 'F', {1, 15, 1993}, {"123 Main St", "Apt 4B"}};
+list_ADD(&people, Person, p1);
 ```
 
-**Use Case:** Appending a `Person` structure to the list.
-
-### 3. Adding Multiple Elements
-
+### Adding Multiple People
 ```c
-Person p2 = {"Jane Smith", 28, 'F', {6, 15, 1995}, {"456 Oak St", "Suite 300"}};
-Person p3 = {"Bob Johnson", 40, 'M', {3, 8, 1983}, {"789 Pine St", NULL}};
-addAll(&people, Person, 2, p2, p3);
+Person p2 = {"Bob", 25, 'M', {6, 20, 1998}, {"456 Elm St", ""}};
+Person p3 = {"Charlie", 40, 'M', {12, 5, 1983}, {"789 Oak St", "Suite 2"}};
+list_ADD_ALL(&people, Person, 2, p2, p3);
 ```
 
-**Use Case:** Quickly adding multiple `Person` structures at once.
-
-### 4. Inserting at a Specific Index
-
+### Adding a Person at a Specific Index
 ```c
-Person p4 = {"Alice Brown", 35, 'F', {9, 10, 1988}, {"159 Elm St", "Floor 2"}};
-addAt(&people, Person, p4, 1);
+Person p4 = {"David", 28, 'M', {4, 10, 1995}, {"321 Pine St", ""}};
+list_ADD_AT(&people, Person, p4, 1);
 ```
 
-**Use Case:** Inserting a `Person` at index 1, shifting elements accordingly.
-
-### 5. Removing an Element
-
+### Checking if the List is Empty
 ```c
-remove(&people, Person, p2);
-```
-
-**Use Case:** Removing a `Person` from the list if they exist.
-
-### 6. Removing by Index
-
-```c
-removeAt(&people, Person, 0);
-```
-
-**Use Case:** Deleting a `Person` at index 0.
-
-### 7. Checking if a List Contains an Element
-
-```c
-if (contains(&people, Person, p3)) {
-    printf("Person exists in the list!\n");
+if (listIsEmpty(&people)) {
+    printf("The list is empty.\n");
+} else {
+    printf("The list is not empty.\n");
 }
 ```
 
-**Use Case:** Searching for a `Person` before performing an operation.
-
-### 8. Getting an Element
-
+### Getting the List Name
 ```c
-Person *retrievedPerson = get(&people, Person, 2);
-if (retrievedPerson) printf("Retrieved: %s, Age: %d\n", retrievedPerson->name, retrievedPerson->age);
+printf("List Name: %s\n", listGetName(&people));
 ```
 
-**Use Case:** Retrieving a `Person` by index safely.
-
-### 9. Setting a Value at an Index
-
+### Getting the Data Type of List Elements
 ```c
-Person newPerson = {"Michael Scott", 45, 'M', {7, 15, 1979}, {"Dunder Mifflin", NULL}};
-set(&people, Person, 1, newPerson);
+printf("List Data Type: %s\n", listGetDataType(&people));
 ```
 
-**Use Case:** Updating a `Person` at a specific index.
-
-### 10. Getting the Index of an Element
-
+### Getting Index of a Person
 ```c
-int index = getIndexOf(&people, Person, p3);
+int index = list_GET_INDEX_OF(&people, Person, p3);
+printf("Charlie is at index %d\n", index);
 ```
 
-**Use Case:** Finding where a `Person` is stored.
-
-### 11. Converting List to an Array
-
+### Checking if a Person Exists in the List
 ```c
-Person *array = toArray(&people, Person);
+if (list_CONTAINS(&people, Person, p1)) {
+    printf("Alice is in the list.\n");
+}
+```
+
+### Retrieving a Person from the List
+```c
+Person *retrieved = list_GET(&people, Person, 1);
+if (retrieved) {
+    printf("Retrieved Person: %s, Age: %d\n", retrieved->name, retrieved->age);
+}
+```
+
+### Setting a Person at a Specific Index
+```c
+Person p5 = {"Eve", 35, 'F', {7, 22, 1988}, {"555 Birch Rd", "Apt 10"}};
+list_SET(&people, Person, 2, p5);
+```
+
+### Getting Memory Address of an Element
+```c
+void *address = listGetMemoryAddress(&people, 1);
+printf("Memory Address of Index 1: %p\n", address);
+```
+
+### Removing a Person from the List
+```c
+list_REMOVE(&people, Person, p2);
+```
+
+### Removing a Person by Index
+```c
+list_REMOVE_AT(&people, Person, 0);
+```
+
+### Getting List Length
+```c
+printf("List Length: %d\n", listLenght(&people));
+```
+
+### Getting Size of an Element
+```c
+printf("Element Size: %zu\n", listSizeOf(&people));
+```
+
+### Getting Total Data Size
+```c
+printf("Total Data Size: %zu\n", listSizeOfData(&people));
+```
+
+### Converting the List to an Array
+```c
+Person *array = list_TO_ARRAY(&people, Person);
+printf("First person in array: %s\n", array[0].name);
 free(array);
 ```
 
-**Use Case:** Exporting the list's contents to a normal array.
-
-### 12. Collecting Elements into a Sublist
-
+### Collecting a Sublist of People Older Than 30
 ```c
-List adults;
-collectToSubList(&people, Person, (*element).age >= 18, &adults);
+List olderPeople;
+list_COLLECT_TO_SUBLIST(&people, Person, retrieved->age > 30, &olderPeople);
+printf("Older People List Length: %d\n", listLenght(&olderPeople));
+listFree(&olderPeople);
 ```
 
-**Use Case:** Filtering only adults (age 18 or older) into a separate list.
-
+### Converting an Array to a List
 ```c
-List ageList;
-collectToSubList(&people, int, element->age, &ageList);
+Person peopleArray[] = {p1, p2, p3};
+list_ARRAY_TO_LIST(&people, Person, peopleArray);
+printf("New List Length: %d\n", listLenght(&people));
 ```
 
-**Use Case:** Creating a separate list containing only ages of people.
-
-### 13. Converting an Array to a List
-
+### Freeing List Memory
 ```c
-Person peopleArray[] = {
-    {"John Doe", 30, 'M', {12, 25, 1993}, {"123 Main St", "Apt 4B"}},
-    {"Jane Smith", 28, 'F', {6, 15, 1995}, {"456 Oak St", "Suite 300"}},
-    {"Bob Johnson", 40, 'M', {3, 8, 1983}, {"789 Pine St", NULL}}
-};
-
-List peopleList;
-arrayToList(&peopleList, Person, peopleArray, 3);
+listFree(&people);
 ```
-
-**Use Case:** Converting an array of `Person` structures into a dynamic list.
-
-### 14. Checking if the List is Empty
-
-```c
-if (isEmpty(&people)) {
-    printf("List is empty\n");
-}
-```
-
-**Use Case:** Avoiding operations on an empty list.
-
-### 15. Getting List Size
-
-```c
-int count = listSize(&people);
-```
-
-**Use Case:** Checking the number of elements in the list.
-
-### 16. Getting Total Memory Allocated
-
-```c
-size_t totalMemory = sizeOfList(&people);
-```
-
-**Use Case:** Understanding memory usage.
-
-### 17. Getting Used Data Memory Size
-
-```c
-size_t usedMemory = sizeOfData(&people);
-```
-
-**Use Case:** Measuring actual data storage.
-
-### 18. Freeing the List
-
-```c
-freeList(&people);
-```
-
-**Use Case:** Preventing memory leaks.
 
 ## Conclusion
-
-This dynamic list implementation provides a convenient way to handle dynamically allocated lists in C, with macros and functions simplifying usage. The examples above showcase various use cases to manage lists effectively using the `Person` structure.
+The `List` library provides a powerful and easy-to-use dynamic list system in C. By using macros, it simplifies list management, making it highly efficient and adaptable for various data types, including user-defined structures like `Person`.
 
