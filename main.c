@@ -82,7 +82,7 @@ int main(int argc, char const *argv[])
 
     list_COLLECT_TO_SUBLIST(&personList, Person, element->age > 30, &olderPeople);
 
-    for (size_t i = 0; i < listLenght(&olderPeople); i++)
+    for (size_t i = 0; i < listLength(&olderPeople); i++)
     {
         printPerson(list_GET(&olderPeople, Person, i));
     }
@@ -99,10 +99,41 @@ int main(int argc, char const *argv[])
 
     list_COLLECT_TO_SUBLIST(&gradeList, int, *element >= 75, &passedGradesList);
 
-    for(int i = 0; i < listLenght(&passedGradesList); i++)
+    for(int i = 0; i < listLength(&passedGradesList); i++)
     {
         printf("Grade: %d\n", *list_GET(&passedGradesList, int, i));
     }
+
+    printf("----------------------------------------------------------------------------------\n");
+
+
+    // Initialize main list
+    List stringList;
+    list_INIT(&stringList, char*);
+       
+    // Define an array of strings
+   char *words[] = {"Apple", "Banana", "Avocado", "Cherry", "Apricot", "Blueberry"};
+       
+    // Add words to list
+    for (int i = 0; i < sizeof(words) / sizeof(words[0]); i++) {
+        list_ADD(&stringList, char*, words[i]);
+    }
+       
+    // Initialize sublist
+    List subList;
+       
+    // Collect strings starting with 'A'
+    list_COLLECT_TO_SUBLIST(&stringList, char*, (*element[0] == 'A'), &subList);
+       
+    // Print sublist contents
+    printf("Filtered List (Words starting with 'A'):\n");
+    for (int i = 0; i < subList.currentCount; i++) {
+       printf("%s\n", *(char**)list_GET(&subList, char*, i));
+    }
+       
+    // Free memory
+    listFree(&stringList);
+    listFree(&subList);
 
     listFree(&gradeList);
     listFree(&passedGradesList);
