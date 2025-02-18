@@ -82,6 +82,8 @@ list_INIT(&people, Person);
 ```c
 Person p1 = {"Alice", 30, 'F', {1, 15, 1993}, {"123 Main St", "Apt 4B"}};
 list_ADD(&people, Person, p1);
+// or
+// list_ADD(&people, Person, {"Alice", 30, 'F', {1, 15, 1993}, {"123 Main St", "Apt 4B"}});
 ```
 
 ### Adding Multiple People
